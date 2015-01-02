@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".PackageSelectorActivity">
+
+    <item android:id="@+id/action_clear_log"
+        android:title="@string/clear_log"
+        android:orderInCategory="1"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_delete_white_24dp" />
+
+</menu>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#009688</color>
+    <color name="primaryColorDark">#00796b</color>
+    <color name="accentColor">#ff9800</color>
+    <color name="pink_50">#f3e5f5</color>
+    <color name="divider">#E0E0E0</color>
+    <color name="textLabel">#fafafa</color>
+    <color name="black_87_900">#212121</color>
+    <color name="black_54_600">#757575</color>
+    <color name="pink_700">#c2185b</color>
+    <color name="cyan_500">#00bcd4</color>
+    <color name="light_green_500">#8bc34a</color>
+    <color name="amber_500">#ffc107</color>
+    <color name="text_boh">#ff636363</color>
+    <color name="transparent_back">#000000</color>
+</resources>

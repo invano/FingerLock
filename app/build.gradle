@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+
+def gitVersion() {
+    def counter = 0
+    def process = "git rev-list master --first-parent --count".execute()
+    return process.text.toInteger()
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.invano.fingerlock"
+        minSdkVersion 17
+        targetSdkVersion 21
+        versionCode 2
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs/', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:21.0.+'
+    compile 'com.android.support:support-v4:21.0.+'
+    compile 'com.afollestad:material-dialogs:0.4.3'
+    compile 'it.neokree:MaterialTabs:0.9'
+    compile 'com.android.support:support-v4-preferencefragment:1.0.0'
+    provided files('lib/XposedBridgeApi-54.jar')
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.invano.fingerlock" >
+
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <application
+        android:name=".FLApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:manageSpaceActivity=".util.ClearDataActivity">
+        <activity
+            android:name=".ui.MainWrapperActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LockFakeActivity"
+            android:label="@string/app_name"
+            android:exported="true"
+            android:theme="@style/AppTransparent"
+            android:excludeFromRecents="true">
+        </activity>
+        <activity
+            android:name=".util.ClearDataActivity"
+            android:theme="@style/AppTransparent2"/>
+        <receiver android:name=".SecureZoneReceiver">
+            <intent-filter>
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+                <action android:name="com.invano.fingerlock.SECURE_ZONE_SWITCH_CHANGED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".RebootReceiver">
+            <intent-filter>
+                <action android:name="com.invano.fingerlock.REBOOT" />
+                <action android:name="com.invano.fingerlock.SOFT_REBOOT" />
+            </intent-filter>
+        </receiver>
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="Use the Samsung fingerprint scanner to block your apps from opening" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="30" />
+    </application>
+
+</manifest>
