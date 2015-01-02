@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FingerLock</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="about">About</string>
+    <string name="search">Cerca</string>
+    <string name="search_hint">Cerca un\'applicazione</string>
+    <string name="developed_by">Sviluppata da @invano</string>
+    <string name="close">Cancella</string>
+    <string name="disclaimer">Questa app non conserva in alcun modo i dati riguardanti le impronte digitali. Il processo di analisi delle impronte è gestito interamente dalle API Samsung.</string>
+    <string name="no_finger">Devi registrare almeno un\'impronta digitale per poter usare FingerLock.</string>
+    <string name="register">Registra</string>
+    <string name="switch_">Switch</string>
+    <string name="settings">Impostazioni</string>
+    <string name="packages">Pacchetti</string>
+    <string name="misc">Varie</string>
+    <string name="title_show_system_apps">Mostra applicazioni di sistema</string>
+    <string name="summary_show_system_apps">Ha effetto dopo aver riavviato questa applicazione.</string>
+    <string name="title_secure_zone">Secure Zone</string>
+    <string name="summary_secure_zone">Permette di sbloccare automaticamente tutte le applicazioni se il dispositivo è connesso a una rete WiFi fidata o a un dispositivo BT fidato.</string>
+    <string name="title_secure_zone_list_wifi">Connessioni WiFi sicure</string>
+    <string name="summary_secure_zone_list_wifi">Seleziona una rete WiFi sicura tra quelle configurate per poter utilizzare la Secure Zone. Per ottenere la lista di reti configurate il WiFi deve essere attivo.</string>
+    <string name="title_secure_zone_list_bt">Dispositivi BT fidati</string>
+    <string name="summary_secure_zone_list_bt">Seleziona un dispositivo BT sicuro tra quelli configurati per poter utilizzare la Secure Zone. Per ottenere la lista di dispositivi configurati il BT deve essere attivo.</string>
+    <string name="title_transition_time">Tempo di transizione</string>
+    <string name="summary_transition_time">Tempo in secondi dopo il quale l\'applicazione è bloccata. Il metodo di blocco sviluppato si affida al tempo speso nel passare da un\'Activity a un\'altra. Per questa ragione il valore minimo (non garantito) è di 2s.</string>
+    <string name="title_prevent_uninstall">Previeni la disinstallazione</string>
+    <string name="summary_prevent_uninstall">Ha effetto dopo un riavvio o un riavvio soft.</string>
+    <string name="unlock_to_continue">Sblocca per continuare</string>
+    <string name="donation_package">Pacchetto donazione</string>
+    <string name="title_mask_notifications">Maschera le notifiche</string>
+    <string name="summary_mask_notifications">Previeni le app bloccate dal mostrare notifiche esplicite. La notifica originale è sostituita con un generico \"New notification\".</string>
+    <string name="title_backup_password">Abilita la password di backup</string>
+    <string name="summary_backup_password">Mostra il tasto per la password nel dialog della lettura dell\'impronta. La password è quella di backup salvata durante la registrazione delle tue impronte digitali.</string>
+    <string name="log">Log</string>
+    <string name="clear_log">Elimina il log</string>
+    <string name="clear_data_question">Eliminare i dati?</string>
+    <string name="clear_data_content">Tutte le app saranno sbloccate e perderai tutte le tue preferenze.</string>
+    <string name="ok">OK</string>
+    <string name="transition_time_hint">Inserisci un valore maggiore di 1</string>
+    <string name="done">Fatto</string>
+    <string name="modified_apps_manual">Chiudi le app modificate dalla lista delle app recenti.</string>
+    <string name="modified_apps_auto">Chiudendo le app modificate..</string>
+    <string name="not_fingerprintservice">Fingerprint Service non è supportato in questo dispositivo.</string>
+    <string name="title_download_play_store">Scarica dal Play Store</string>
+    <string name="summary_download_play_store">Se ti piace FingerLock puoi comprare il Pacchetto Donazione dal Google Play Store</string>
+    <string name="reboot">Riavvio</string>
+    <string name="soft_reboot">Riavvio-soft</string>
+    <string name="ticker_prevent_uninstall">Per favore riavvia il tuo dispositivo</string>
+    <string name="log_deleted">Log eliminato</string>
+</resources>

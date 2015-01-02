@@ -48,4 +48,5 @@
     <string name="reboot">Reboot</string>
     <string name="soft_reboot">Soft-Reboot</string>
     <string name="ticker_prevent_uninstall">Please reboot your device</string>
+    <string name="log_deleted">Log deleted</string>
 </resources>

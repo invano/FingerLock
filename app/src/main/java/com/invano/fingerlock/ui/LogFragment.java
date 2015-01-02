@@ -52,7 +52,7 @@ public class LogFragment extends Fragment {
             case R.id.action_clear_log:
                 LogFile.delete(getActivity());
                 logTextView.setText("");
-                Toast.makeText(getActivity(), "Log deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.log_deleted, Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
