@@ -153,7 +153,7 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
                         || (info.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
                         && !Util.MY_PACKAGE_NAME.equals(info.activityInfo.packageName)) {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("title", info.loadLabel(pm));
+                    map.put("title", info.loadLabel(pm).toString());
                     map.put("key", info.activityInfo.packageName);
                     map.put("icon", info.loadIcon(pm));
                     items.add(map);
