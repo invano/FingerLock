@@ -45,8 +45,6 @@ MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from com.github.markushi:android-ui:1.2:9:5
 MERGED from com.android.support:appcompat-v7:21.0.3:16:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
-MERGED from com.android.support:support-v4-preferencefragment:1.0.0:16:5
-MERGED from com.android.support:support-v4:21.0.3:16:5
 	android:label
 		ADDED from AndroidManifest.xml:15:9
 	android:allowBackup
@@ -164,8 +162,6 @@ MERGED from com.android.support:support-v4:21.0.3:15:5
 MERGED from it.neokree:MaterialTabs:0.9:7:5
 MERGED from com.github.markushi:android-ui:1.2:7:5
 MERGED from com.android.support:appcompat-v7:21.0.3:15:5
-MERGED from com.android.support:support-v4:21.0.3:15:5
-MERGED from com.android.support:support-v4-preferencefragment:1.0.0:15:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
 	android:targetSdkVersion
 		INJECTED from AndroidManifest.xml:0:0

@@ -138,7 +138,12 @@ public class LockFakeActivity extends Activity {
                 } else {
                     if (!onReadyIdentify) {
                         onReadyIdentify = true;
-                        mSpassFingerprint.setDialogBgTransparency(0);
+                        try {
+                            mSpassFingerprint.setDialogBgTransparency(0);
+                        }
+                        catch (IllegalStateException e) {
+                            Log.e("SPASS", "Transparency not supported");
+                        }
                         mSpassFingerprint.startIdentifyWithDialog(context, listener, FLApplication.useBackupPassword());
                     }
                 }
