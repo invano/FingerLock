@@ -1,10 +1,10 @@
 package com.invano.fingerlock.ui;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.provider.Settings;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -64,7 +64,7 @@ public class MainWrapperActivity extends ActionBarActivity implements MaterialTa
         pager = (ViewPager) this.findViewById(R.id.pager );
 
         // init view pager
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getFragmentManager());
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(2);
         pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
