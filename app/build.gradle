@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 def versionMajor = 1
 def versionMinor = 0
-def versionPatch = 1
+def versionPatch = 2
 
 def gitVersion() {
     def counter = 0
@@ -36,6 +36,5 @@ dependencies {
     compile 'com.android.support:support-v13:21.0.+'
     compile 'com.afollestad:material-dialogs:0.4.3'
     compile 'it.neokree:MaterialTabs:0.9'
-    compile 'com.android.support:support-v4-preferencefragment:1.0.0'
     provided files('lib/XposedBridgeApi-54.jar')
 }
