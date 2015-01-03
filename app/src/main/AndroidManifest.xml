@@ -31,6 +31,8 @@
             android:label="@string/app_name"
             android:exported="true"
             android:theme="@style/AppTransparent"
+            android:screenOrientation="sensor"
+            android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true">
         </activity>
         <activity

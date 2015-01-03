@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -25,6 +26,10 @@ public class LockFakeActivity extends Activity {
     private String lockedPkgName;
     private Intent lockedApp;
     private Context context;
+    private TextView label;
+    private ImageView icon;
+    private Drawable ic = null;
+    private String lb = null;
 
     private SpassFingerprint mSpassFingerprint;
     private Spass mSpass;
@@ -34,6 +39,7 @@ public class LockFakeActivity extends Activity {
 
 
     private SpassFingerprint.IdentifyListener listener = new SpassFingerprint.IdentifyListener() {
+
         @Override
         public void onFinished(int eventStatus) {
             if (eventStatus == SpassFingerprint.STATUS_AUTHENTIFICATION_SUCCESS
@@ -73,7 +79,29 @@ public class LockFakeActivity extends Activity {
             fingerprintSucceeded();
         }
         else {
+            label = (TextView) findViewById(R.id.label_locked);
+            icon = (ImageView) findViewById(R.id.icon_locked);
             askFingerprint();
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setContentView(R.layout.lock_fake_activity);
+            label = (TextView) findViewById(R.id.label_locked);
+            icon = (ImageView) findViewById(R.id.icon_locked);
+        }
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            setContentView(R.layout.lock_fake_activity_land );
+            label = (TextView) findViewById(R.id.label_locked);
+            icon = (ImageView) findViewById(R.id.icon_locked);
+        }
+        if(ic != null && lb != null) {
+            icon.setImageDrawable(ic);
+            label.setText(lb);
         }
     }
 
@@ -81,13 +109,8 @@ public class LockFakeActivity extends Activity {
         mSpass = new Spass();
         mSpassFingerprint = new SpassFingerprint(context);
 
-        TextView label = (TextView) findViewById(R.id.label_locked);
-        ImageView icon = (ImageView) findViewById(R.id.icon_locked);
-
         PackageManager packageManager = getPackageManager();
         ApplicationInfo applicationInfo;
-        Drawable ic = null;
-        String lb = null;
         try {
             ic = packageManager.getApplicationIcon(lockedPkgName);
             applicationInfo = packageManager.getApplicationInfo(lockedPkgName, 0);
