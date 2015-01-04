@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -153,9 +154,33 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
                         || (info.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
                         && !Util.MY_PACKAGE_NAME.equals(info.activityInfo.packageName)) {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("title", info.loadLabel(pm).toString());
+                    String label;
+                    Drawable icon;
+
+                    try {
+                        if (info.activityInfo.labelRes != 0)
+                            label = context.createPackageContext(info.activityInfo.packageName, 0).getResources().getString(info.activityInfo.labelRes);
+                        else
+                            label = pm.getApplicationLabel(info.activityInfo.applicationInfo).toString();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        label = pm.getApplicationLabel(info.activityInfo.applicationInfo).toString();
+                    }
+
+                    try {
+                        if (info.activityInfo.icon != 0)
+                            icon = context.createPackageContext(info.activityInfo.packageName, 0).getResources().getDrawable(info.activityInfo.icon);
+                        else
+                            icon = pm.getApplicationIcon(info.activityInfo.packageName);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        icon = context.getResources().getDrawable(R.drawable.ic_noicon);
+                    }
+
+                    map.put("title", label);
                     map.put("key", info.activityInfo.packageName);
-                    map.put("icon", info.loadIcon(pm));
+                    map.put("icon", icon);
                     items.add(map);
                     nApps++;
                     publishProgress(nApps);
