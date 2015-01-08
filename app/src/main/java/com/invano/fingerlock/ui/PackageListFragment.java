@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.invano.fingerlock.FLApplication;
@@ -42,38 +43,41 @@ import java.util.Set;
 
 public class PackageListFragment extends Fragment implements SearchView.OnQueryTextListener {
 
-    static private ListView packagesListView;
+    private ListView packagesListView;
     private ImageCheckBoxAdapter listAdapter;
     private SearchView searchView;
 
-    private ProgressDialog progressDialog;
+    private ProgressBar progressBar;
 
     private HashSet<String> changedPackages;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         setHasOptionsMenu(true);
+        changedPackages = new HashSet<>();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.package_selector_main, container, false);
         packagesListView = (ListView)rootView.findViewById(R.id.listViewPkg);
-        changedPackages = new HashSet<>();
+        progressBar = (ProgressBar)rootView.findViewById(R.id.progressBarApps);
         return rootView;
 
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         if (listAdapter == null || listAdapter.isEmpty()) {
-            new AppListTask().execute();
+            new AppListTask(getActivity()).execute();
         }
     }
 
     @Override
     public void onPause() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
         restartAppsHint(getActivity(), changedPackages);
         super.onPause();
     }
@@ -119,23 +123,16 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
 
     private class AppListTask extends AsyncTask<Void, Integer, List<Map<String, Object>>> {
 
-        final AsyncTask task = this;
-        Context context = getActivity();
+        Context context;
+
+        public AppListTask(Activity context) {
+            this.context = context;
+        }
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(context);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setCancelable(true);
-            progressDialog.show();
-            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    task.cancel(true);
-                }
-            });
+            progressBar.setProgress(0);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -147,8 +144,8 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
             List<ResolveInfo> list = pm.queryIntentActivities(i, 0);
 
             ArrayList<Map<String, Object>> items = new ArrayList<>();
-            progressDialog.setMax(list.size());
-            int nApps = 0;
+            progressBar.setMax(list.size());
+            int nApps = 1;
             for(ResolveInfo info : list) {
                 if((FLApplication.showSystemApps()
                         || (info.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
@@ -164,7 +161,7 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
                             label = pm.getApplicationLabel(info.activityInfo.applicationInfo).toString();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        label = pm.getApplicationLabel(info.activityInfo.applicationInfo).toString();
+                        label = "";
                     }
 
                     try {
@@ -201,19 +198,12 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
-            progressDialog.setProgress(progress[0]);
+            progressBar.setProgress(progress[0]);
         }
 
         @Override
         protected void onPostExecute(List<Map<String, Object>> items) {
             super.onPostExecute(items);
-
-            if (progressDialog != null && progressDialog.isShowing()) {
-                if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                    progressDialog.dismiss();
-                    progressDialog = null;
-                }
-            }
             listAdapter = new ImageCheckBoxAdapter(context, items);
             listAdapter.registerOnPackageSelected(new OnPackageSelectedListener() {
 
@@ -228,6 +218,7 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
                 }
             });
             packagesListView.setAdapter(listAdapter);
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 
