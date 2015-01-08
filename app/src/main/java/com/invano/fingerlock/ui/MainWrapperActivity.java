@@ -31,16 +31,18 @@ public class MainWrapperActivity extends ActionBarActivity implements MaterialTa
 
     private SpassFingerprint mSpassFingerprint;
     private Spass mSpass = new Spass();
+    private boolean onReadyIdentify = false;
 
     private SpassFingerprint.IdentifyListener listener = new SpassFingerprint.IdentifyListener() {
         @Override
         public void onFinished(int eventStatus) {
+            onReadyIdentify = false;
             if (eventStatus == SpassFingerprint.STATUS_AUTHENTIFICATION_SUCCESS
                     || eventStatus == SpassFingerprint.STATUS_AUTHENTIFICATION_PASSWORD_SUCCESS) {
                 Log.e("SPASS", "onFinished() : STATUS_AUTHENTIFICATION_SUCCESS" );
             }
             else {
-                finish();
+                MainWrapperActivity.this.finish();
             }
         }
 
@@ -123,14 +125,16 @@ public class MainWrapperActivity extends ActionBarActivity implements MaterialTa
                             .build()
                             .show();
                 } else {
-                    mSpassFingerprint.startIdentifyWithDialog(this, listener, FLApplication.useBackupPassword());
+                    if(!onReadyIdentify) {
+                        onReadyIdentify = true;
+                        mSpassFingerprint.startIdentifyWithDialog(this, listener, FLApplication.useBackupPassword());
+                    }
                 }
             }
         } catch (UnsupportedOperationException e){
             Log.e("SPASS", "Fingerprint Service is not supported in the device");
         }
     }
-
 
     static String getEventStatusName(int eventStatus) {
         switch (eventStatus) {

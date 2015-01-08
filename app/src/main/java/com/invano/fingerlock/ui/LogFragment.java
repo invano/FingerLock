@@ -1,5 +1,7 @@
 package com.invano.fingerlock.ui;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -35,7 +37,7 @@ public class LogFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new LogLoadAsyncTask().execute();
+        new LogLoadAsyncTask(getActivity()).execute();
     }
 
     @Override
@@ -73,13 +75,21 @@ public class LogFragment extends Fragment {
 
     private class LogLoadAsyncTask extends AsyncTask<Void, Void, String> {
 
+        private Context context;
+
+        public LogLoadAsyncTask(Activity context) {
+            this.context = context;
+        }
+
         @Override
         protected String doInBackground(Void... params) {
             String logString = null;
             try {
-                FileInputStream fin = getActivity().openFileInput("log.txt");
-                logString = convertStreamToString(fin);
-                fin.close();
+                if (context != null) {
+                    FileInputStream fin = context.openFileInput("log.txt");
+                    logString = convertStreamToString(fin);
+                    fin.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

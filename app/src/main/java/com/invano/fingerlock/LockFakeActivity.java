@@ -25,7 +25,6 @@ public class LockFakeActivity extends Activity {
 
     private String lockedPkgName;
     private Intent lockedApp;
-    private Context context;
     private TextView label;
     private ImageView icon;
     private Drawable ic = null;
@@ -42,15 +41,14 @@ public class LockFakeActivity extends Activity {
 
         @Override
         public void onFinished(int eventStatus) {
+            onReadyIdentify = false;
             if (eventStatus == SpassFingerprint.STATUS_AUTHENTIFICATION_SUCCESS
                     || eventStatus == SpassFingerprint.STATUS_AUTHENTIFICATION_PASSWORD_SUCCESS) {
-
-                onReadyIdentify = false;
                 fingerprintSucceeded();
             }
             else {
-                LogFile.i(context, lockedPkgName + " access failed");
-                finish();
+                LogFile.i(LockFakeActivity.this, lockedPkgName + " access failed");
+                LockFakeActivity.this.finish();
             }
         }
 
@@ -65,7 +63,6 @@ public class LockFakeActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.lock_fake_activity);
-        context = this;
 
         lockedApp = getIntent().getParcelableExtra(Util.ORIG_INTENT);
         lockedPkgName = getIntent().getStringExtra(Util.LOCK);
@@ -107,7 +104,7 @@ public class LockFakeActivity extends Activity {
 
     private void askFingerprint() {
         mSpass = new Spass();
-        mSpassFingerprint = new SpassFingerprint(context);
+        mSpassFingerprint = new SpassFingerprint(this);
 
         PackageManager packageManager = getPackageManager();
         ApplicationInfo applicationInfo;
@@ -127,7 +124,7 @@ public class LockFakeActivity extends Activity {
     private void checkFingerPrint() {
 
         try {
-            mSpass.initialize(context);
+            mSpass.initialize(this);
         } catch (SsdkUnsupportedException e) {
             Log.e("SPASS", "Exception: " + e);
         } catch (UnsupportedOperationException e) {
@@ -140,7 +137,7 @@ public class LockFakeActivity extends Activity {
                 Log.e("SPASS", "Fingerprint Service is not supported in the device");
             } else {
                 if(!mSpassFingerprint.hasRegisteredFinger()){
-                    new MaterialDialog.Builder(context)
+                    new MaterialDialog.Builder(this)
                             .content(R.string.no_finger)
                             .positiveText(R.string.register)  // the default is 'Accept'
                             .negativeText(R.string.close)
@@ -167,7 +164,7 @@ public class LockFakeActivity extends Activity {
                         catch (IllegalStateException e) {
                             Log.e("SPASS", "Transparency not supported");
                         }
-                        mSpassFingerprint.startIdentifyWithDialog(context, listener, FLApplication.useBackupPassword());
+                        mSpassFingerprint.startIdentifyWithDialog(this, listener, FLApplication.useBackupPassword());
                     }
                 }
             }
