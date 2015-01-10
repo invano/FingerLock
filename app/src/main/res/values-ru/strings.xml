@@ -47,4 +47,6 @@
     <string name="soft_reboot">Мягкая перезагрузка</string>
     <string name="ticker_prevent_uninstall">Перезагрузите устройство</string>
     <string name="log_deleted">Лог удален</string>
+    <string name="title_master_switch_disabled">FingerLock отключен</string>
+    <string name="title_master_switch_enabled">FingerLock включен</string>
 </resources>

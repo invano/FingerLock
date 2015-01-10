@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">FingerLock</string>
     <string name="action_settings">Impostazioni</string>
     <string name="about">About</string>
     <string name="search">Cerca</string>
@@ -21,7 +20,7 @@
     <string name="summary_secure_zone">Permette di sbloccare automaticamente tutte le applicazioni se il dispositivo è connesso a una rete WiFi fidata o a un dispositivo BT fidato.</string>
     <string name="title_secure_zone_list_wifi">Connessioni WiFi sicure</string>
     <string name="summary_secure_zone_list_wifi">Seleziona una rete WiFi sicura tra quelle configurate per poter utilizzare la Secure Zone. Per ottenere la lista di reti configurate il WiFi deve essere attivo.</string>
-    <string name="title_secure_zone_list_bt">Dispositivi BT fidati</string>
+    <string name="title_secure_zone_list_bt">Dispositivi BT sicuri</string>
     <string name="summary_secure_zone_list_bt">Seleziona un dispositivo BT sicuro tra quelli configurati per poter utilizzare la Secure Zone. Per ottenere la lista di dispositivi configurati il BT deve essere attivo.</string>
     <string name="title_transition_time">Tempo di transizione</string>
     <string name="summary_transition_time">Tempo in secondi dopo il quale l\'applicazione è bloccata. Il metodo di blocco sviluppato si affida al tempo speso nel passare da un\'Activity a un\'altra. Per questa ragione il valore minimo (non garantito) è di 2s.</string>
@@ -49,4 +48,6 @@
     <string name="soft_reboot">Riavvio-soft</string>
     <string name="ticker_prevent_uninstall">Per favore riavvia il tuo dispositivo</string>
     <string name="log_deleted">Log eliminato</string>
+    <string name="title_master_switch_disabled">FingerLock è disabilitato</string>
+    <string name="title_master_switch_enabled">FingerLock è abilitato</string>
 </resources>

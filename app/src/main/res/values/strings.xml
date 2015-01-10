@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">FingerLock</string>
+    <string name="app_name" translatable="false">FingerLock</string>
     <string name="action_settings">Settings</string>
     <string name="about">About</string>
     <string name="search">Search</string>
@@ -49,4 +49,6 @@
     <string name="soft_reboot">Soft-Reboot</string>
     <string name="ticker_prevent_uninstall">Please reboot your device</string>
     <string name="log_deleted">Log deleted</string>
+    <string name="title_master_switch_enabled">FingerLock is enabled</string>
+    <string name="title_master_switch_disabled">FingerLock is disabled</string>
 </resources>

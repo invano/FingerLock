@@ -37,6 +37,7 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     private static boolean secureZone;
     private static int transitionTime;
     private static boolean hideNotifications;
+    private static boolean masterSwitch;
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
@@ -59,7 +60,7 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reloadSettings();
-                if (secureZone || !hideNotifications)
+                if (!masterSwitch || secureZone || !hideNotifications)
                     return;
                 Context context = (Context) getObjectField(param.thisObject, "mContext");
                 Notification nOld = (Notification) param.args[2];
@@ -73,22 +74,12 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 param.args[2] = nNew;
             }
         });
-        /*hookAllMethods(nMS, "notify", new XC_MethodHook() {
-            @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                reloadSettings();
-                if (secureZone || !hideNotifications)
-                    return;
-
-                param.setResult(null);
-            }
-        });*/
 
         findAndHookMethod(activity, "getWindow", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 reloadSettings();
-                if (secureZone)
+                if (!masterSwitch || secureZone)
                     return;
                 Window window = (Window) param.getResult();
                 if ((window.getAttributes().flags & WindowManager.LayoutParams.FLAG_SECURE) != WindowManager.LayoutParams.FLAG_SECURE) {
@@ -112,7 +103,7 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reloadSettings();
-                if (secureZone)
+                if (!masterSwitch || secureZone)
                     return;
                 final Activity app = (Activity) param.thisObject;
                 if (app.getClass().getName().equals("android.app.Activity")) {
@@ -136,7 +127,7 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reloadSettings();
-                if (secureZone)
+                if (!masterSwitch || secureZone)
                     return;
                 final Activity app = (Activity) param.thisObject;
                 if (app.getClass().getName().equals("android.app.Activity")) {
@@ -190,5 +181,6 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         secureZone = pref.getBoolean(Util.SECURE_ZONE_SWITCH, false);
         transitionTime = pref.getInt(Util.TRANSITION_TIME, Util.MAX_TRANSITION_TIME_MS);
         hideNotifications = pref.getBoolean(Util.MASK_NOTIFICATIONS, false);
+        masterSwitch = pref.getBoolean(Util.MASTER_SWITCH, true);
     }
 }
