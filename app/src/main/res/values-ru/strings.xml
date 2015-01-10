@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FingerLock</string>
     <string name="action_settings">Настройки</string>
     <string name="about">О программе</string>
     <string name="search">Поиск</string>
@@ -15,15 +14,15 @@
     <string name="packages">Приложения</string>
     <string name="misc">Прочее</string>
     <string name="title_show_system_apps">Отображать системные приложения</string>
-    <string name="summary_show_system_apps">Для внесения изменений закройте и заново откройте FingerLock.</string>
+    <string name="summary_show_system_apps">Требуется перезапуск FingerLock.</string>
     <string name="title_secure_zone">Безопасное окружение</string>
     <string name="summary_secure_zone">Автоматическая разблокировка всех приложений, когда смартфон подключен к доверенной WiFi-сети или Bluetooth-устройству.</string>
     <string name="title_secure_zone_list_wifi">Доверенные сети WiFi</string>
-    <string name="summary_secure_zone_list_wifi">Выберите доверенную сеть WiFi из списка сохраненных не устройстве для активации функции безопасного окружения. WiFi должен быть включен на вашем смартфоне для просмотра списка сетей.</string>
+    <string name="summary_secure_zone_list_wifi">Выберите доверенную сеть WiFi из списка сохраненных не устройстве. WiFi должен быть включен.</string>
     <string name="title_secure_zone_list_bt">Доверенные BT-устройства</string>
-    <string name="summary_secure_zone_list_bt">Выберите доверенные Bluetooth-устройства из списка спаренных для активации функции безопасного окружения. Bluetooth должен быть включен для просмотра списка устройств.</string>
+    <string name="summary_secure_zone_list_bt">Выберите доверенные Bluetooth-устройства из списка спаренных. Bluetooth должен быть включен.</string>
     <string name="title_transition_time">Тайм-аут блокировки</string>
-    <string name="summary_transition_time">Время в секундах, после которого выбранные приложения будут заблокированы. Минимальный тайм-аут составляет 2 сек.</string>
+    <string name="summary_transition_time">Время в секундах, после которого разблокированные приложения будут автоматически заблокированы снова при сворачивании или переключении на другое приложение (минимум - 2 сек).</string>
     <string name="title_prevent_uninstall">Запрет деинсталляции</string>
     <string name="summary_prevent_uninstall">Перезагрузите устройство для внесения изменений.</string>
     <string name="unlock_to_continue">Разблокируйте для продолжения</string>
@@ -31,7 +30,7 @@
     <string name="title_mask_notifications">Маскировать уведомления</string>
     <string name="summary_mask_notifications">Запрещать заблокированным приложениям выводить уведомления (заменяются стандартным "New notification").</string>
     <string name="title_backup_password">Включить резервный пароль</string>
-    <string name="summary_backup_password">Отображать кнопку ввода пароля в диалоге сканирования отпечатка пальца. Резервный пароль сохраняется в процессе регистрации отпечатка пальца в настройках устройства.</string>
+    <string name="summary_backup_password">Отображать кнопку ввода пароля в диалоге сканирования отпечатка пальца (сохраняется в процессе регистрации отпечатка пальца в настройках устройства).</string>
     <string name="log">Лог</string>
     <string name="clear_log">Очистить лог</string>
     <string name="clear_data_question">Удалить данные?</string>
@@ -43,7 +42,7 @@
     <string name="modified_apps_auto">Закрытие заблокированных приложений…</string>
     <string name="not_fingerprintservice">Сервис сканирования отпечатков пальцев не поддерживается на вашем устройстве</string>
     <string name="title_download_play_store">Загрузите из Play Store</string>
-    <string name="summary_download_play_store">Если вам понравилось приложение FingerLock, можете приобрести платную версию из Google Play Store</string>
+    <string name="summary_download_play_store">Для активации дополнительных функций приобретите платную версию из Google Play Store</string>
     <string name="reboot">Перезагрузка</string>
     <string name="soft_reboot">Мягкая перезагрузка</string>
     <string name="ticker_prevent_uninstall">Перезагрузите устройство</string>
