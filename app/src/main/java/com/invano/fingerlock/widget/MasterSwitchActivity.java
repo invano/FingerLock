@@ -50,6 +50,11 @@ public class MasterSwitchActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
+        if(!FLApplication.isMasterSwitch()) {
+            listener.onFinished(SpassFingerprint.STATUS_AUTHENTIFICATION_SUCCESS);
+            return;
+        }
+
         try {
             mSpass.initialize(this);
         } catch (SsdkUnsupportedException | UnsupportedOperationException e) {
