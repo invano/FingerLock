@@ -10,10 +10,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -151,33 +154,35 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
                         || (info.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
                         && !Util.MY_PACKAGE_NAME.equals(info.activityInfo.packageName)) {
                     Map<String, Object> map = new HashMap<>();
-                    String label;
-                    Drawable icon;
+                    String label = pm.getApplicationLabel(info.activityInfo.applicationInfo).toString();
+                    Bitmap iconBitmap = null;
+                    Drawable iconDrawable = null;
 
                     try {
-                        if (info.activityInfo.labelRes != 0)
-                            label = context.createPackageContext(info.activityInfo.packageName, 0).getResources().getString(info.activityInfo.labelRes);
-                        else
-                            label = pm.getApplicationLabel(info.activityInfo.applicationInfo).toString();
-                    } catch (Exception e) {
+                        Bitmap icon = ((BitmapDrawable) pm.getApplicationIcon(info.activityInfo.packageName)).getBitmap();
+                        if (icon.getHeight() > 192 || icon.getWidth() > 192) {
+                            iconBitmap = Bitmap.createScaledBitmap(icon, 192, 192, true);
+                        } else {
+                            iconBitmap = icon;
+                        }
+                    } catch (ClassCastException e) {
+                        try {
+                            iconDrawable = pm.getApplicationIcon(info.activityInfo.packageName);
+                        } catch (PackageManager.NameNotFoundException e1) {
+                            e1.printStackTrace();
+                        }
+                    } catch (PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
-                        label = "";
-                    }
-
-                    try {
-                        if (info.activityInfo.icon != 0)
-                            icon = context.createPackageContext(info.activityInfo.packageName, 0).getResources().getDrawable(info.activityInfo.icon);
-                        else
-                            icon = pm.getApplicationIcon(info.activityInfo.packageName);
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                        icon = context.getResources().getDrawable(R.drawable.ic_noicon);
                     }
 
                     map.put("title", label);
                     map.put("key", info.activityInfo.packageName);
-                    map.put("icon", icon);
+
+                    if (iconBitmap != null)
+                        map.put("icon", iconBitmap);
+                    else
+                        map.put("icon", iconDrawable);
+
                     items.add(map);
                     nApps++;
                     publishProgress(nApps);

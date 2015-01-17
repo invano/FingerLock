@@ -2,6 +2,8 @@ package com.invano.fingerlock;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,11 +67,15 @@ public class ImageCheckBoxAdapter extends BaseAdapter {
         }
 
         final String itemTitle = (String) mItemList.get(position).get("title");
-        final String key = (String) mItemList.get(position).get("key");
-        final Drawable itemIcon = (Drawable) mItemList.get(position).get("icon");
-
         vh.title.setText(itemTitle);
-        vh.icon.setImageDrawable(itemIcon);
+
+        final String key = (String) mItemList.get(position).get("key");
+
+        final Object itemIcon = mItemList.get(position).get("icon");
+        if (itemIcon instanceof Bitmap)
+            vh.icon.setImageBitmap((Bitmap) itemIcon);
+        else
+            vh.icon.setImageDrawable((Drawable) itemIcon);
 
         if(pref.getBoolean(key, false)) {
             vh.checkBox.setChecked(true);
@@ -113,7 +119,7 @@ public class ImageCheckBoxAdapter extends BaseAdapter {
                 results.count = oriItemList.size();
             }
             else {
-                List<Map<String, Object>> filteredList = new ArrayList<Map<String, Object>>();
+                List<Map<String, Object>> filteredList = new ArrayList<>();
 
                 for(Map<String, Object> app : oriItemList) {
                     String title = ((String) app.get("title")).toLowerCase();
