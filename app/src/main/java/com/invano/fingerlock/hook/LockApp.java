@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
+import android.content.res.TypedArray;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -143,11 +144,19 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     }
 
     private void startFingerLockActivity(final Activity app, String packageName) {
+        TypedArray array = app.getTheme().obtainStyledAttributes(new int[] {
+                android.R.attr.colorBackground,
+        });
+        int backgroundColor = array.getColor(0, 0xFF00FF);
+        array.recycle();
+
         Intent it = new Intent();
         it.setComponent(new ComponentName(Util.MY_PACKAGE_NAME, Util.MY_PACKAGE_NAME + ".LockFakeActivity"));
         it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         it.putExtra(Util.ORIG_INTENT, app.getIntent());
         it.putExtra(Util.LOCK, packageName);
+        it.putExtra(Util.BACKGROUND_COLORget, backgroundColor);
+
         app.startActivity(it);
         app.overridePendingTransition(0,0);
     }
