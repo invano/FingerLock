@@ -155,7 +155,7 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         it.putExtra(Util.ORIG_INTENT, app.getIntent());
         it.putExtra(Util.LOCK, packageName);
-        it.putExtra(Util.BACKGROUND_COLORget, backgroundColor);
+        it.putExtra(Util.BACKGROUND_COLOR, backgroundColor);
 
         app.startActivity(it);
         app.overridePendingTransition(0,0);

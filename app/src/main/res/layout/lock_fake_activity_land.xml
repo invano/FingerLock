@@ -1,46 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight=".5" >
 
-        <ImageView
-            android:id="@+id/icon_locked"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+    <ImageView
+        android:id="@+id/icon_locked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/label_locked"
+        android:layout_centerHorizontal="true" />
 
-        <TextView
-            android:id="@+id/label_locked"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:textColor="@color/textLabel"
-            android:layout_below="@+id/icon_locked"
-            android:layout_marginTop="16dp"
-            android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/label_locked"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:textColor="@color/textLabel"
+        android:layout_marginTop="16dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:text="@string/unlock_to_continue"
-            android:textColor="@color/textLabel"
-            android:layout_below="@+id/label_locked"
-            android:layout_centerHorizontal="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:text="@string/unlock_to_continue"
+        android:textColor="@color/textLabel"
+        android:layout_below="@+id/label_locked"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView2" />
 
-    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:text="@string/spass_init"
+        android:textColor="@color/textLabel"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textViewSpass" />
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight=".5" />
-</LinearLayout>
+    <ImageView
+        android:id="@+id/fingerprintImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/highlight_dot"
+        android:layout_alignParentEnd="true"
+        android:rotation="270"
+        android:layout_centerVertical="true" />
+</RelativeLayout>
