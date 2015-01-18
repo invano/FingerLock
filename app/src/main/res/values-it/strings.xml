@@ -15,7 +15,7 @@
     <string name="packages">Pacchetti</string>
     <string name="misc">Varie</string>
     <string name="title_show_system_apps">Mostra applicazioni di sistema</string>
-    <string name="summary_show_system_apps">Ha effetto dopo aver riavviato questa applicazione.</string>
+    <string name="summary_show_system_apps">Ha effetto dopo aver riavviato questa applicazione. Bloccare le app di sistema può causare problemi e un\'esperienza utente limitata nell\'uso quotidiano.</string>
     <string name="title_secure_zone">Secure Zone</string>
     <string name="summary_secure_zone">Permette di sbloccare automaticamente tutte le applicazioni se il dispositivo è connesso a una rete WiFi fidata o a un dispositivo BT fidato.</string>
     <string name="title_secure_zone_list_wifi">Connessioni WiFi sicure</string>
@@ -31,7 +31,7 @@
     <string name="title_mask_notifications">Maschera le notifiche</string>
     <string name="summary_mask_notifications">Previeni le app bloccate dal mostrare notifiche esplicite. La notifica originale è sostituita con un generico \"New notification\".</string>
     <string name="title_backup_password">Abilita la password di backup</string>
-    <string name="summary_backup_password">Mostra il tasto per la password nel dialog della lettura dell\'impronta. La password è quella di backup salvata durante la registrazione delle tue impronte digitali.</string>
+    <string name="summary_backup_password">Mostra il tasto per la password nel dialog della lettura dell\'impronta quando usi il widget o elimini i dati dell\'app. La password è quella di backup salvata durante la registrazione delle tue impronte digitali.</string>
     <string name="log">Log</string>
     <string name="clear_log">Elimina il log</string>
     <string name="clear_data_question">Eliminare i dati?</string>
@@ -50,4 +50,13 @@
     <string name="log_deleted">Log eliminato</string>
     <string name="title_master_switch_disabled">FingerLock è disabilitato</string>
     <string name="title_master_switch_enabled">FingerLock è abilitato</string>
+    <string name="spass_auth_failed">AUTENTICAZIONE FALLITA\nImpronta non riconosciuta</string>
+    <string name="spass_quality_failed">AUTENTICAZIONE FALLITA\nQualità dell\'impronta non sufficiente</string>
+    <string name="spass_auth_success">AUTENTICAZIONE ESEGUITA</string>
+    <string name="spass_init">Fai scorrere il tuo dito</string>
+    <string name="spass_auth_failed_attempts">Troppi tentativi falliti\nAutenticazione bloccata per 30 secondi</string>
+    <string name="spass_not_supported">Sfortunatamente FingerLock non è compatibile con il tuo dispositivo e non potrà funzionare. Il tuo telefono non è Samsung o il sensore di impronte digitali Samsung è assente.</string>
+    <string name="spass_update">FingerLock non funzionerà se non aggiorni le librerie del sensore di impronte digitali Samsung</string>
+    <string name="spass_missing_lib">FingerLock perché le librerie del sensore di impronte digitali Samsung non sono state trovate</string>
+    <string name="error">Errore</string>
 </resources>

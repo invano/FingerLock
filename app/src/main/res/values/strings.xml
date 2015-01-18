@@ -16,7 +16,7 @@
     <string name="packages">Packages</string>
     <string name="misc">Misc</string>
     <string name="title_show_system_apps">Show system apps</string>
-    <string name="summary_show_system_apps">Takes effect after reopening this app.</string>
+    <string name="summary_show_system_apps">Takes effect after reopening this app. By locking system apps may cause problems and a limited user experience in everyday usage.</string>
     <string name="title_secure_zone">Secure Zone</string>
     <string name="summary_secure_zone">It allows to automatically unlock all applications if the device is connected to a trusted WiFi or BT connection.</string>
     <string name="title_secure_zone_list_wifi">Trusted WiFi connections</string>
@@ -32,7 +32,7 @@
     <string name="title_mask_notifications">Mask notifications</string>
     <string name="summary_mask_notifications">Prevent locked apps to show explicit notifications. The original notification is replaced with a generic \"New notification\".</string>
     <string name="title_backup_password">Enable backup password</string>
-    <string name="summary_backup_password">Display the password button in the fingerprint reading dialog. The password is the backup one saved during the fingerprint registration.</string>
+    <string name="summary_backup_password">Display the password button in the fingerprint reading dialog when using the widget or when clearing the app data. The password is the backup one saved during the fingerprint registration.</string>
     <string name="log">Log</string>
     <string name="clear_log">Clear log</string>
     <string name="clear_data_question">Clear Data?</string>
@@ -51,4 +51,13 @@
     <string name="log_deleted">Log deleted</string>
     <string name="title_master_switch_enabled">FingerLock is enabled</string>
     <string name="title_master_switch_disabled">FingerLock is disabled</string>
+    <string name="spass_auth_failed">AUTHENTICATION FAILED\nFingerprint not recognized</string>
+    <string name="spass_quality_failed">AUTHENTICATION FAILED\nBad fingerprint quality</string>
+    <string name="spass_auth_success">AUTHENTICATION SUCCESS</string>
+    <string name="spass_init">Swipe you fingerprint</string>
+    <string name="spass_auth_failed_attempts">Too many attempts are failed\nAuthentication denied in 30 seconds</string>
+    <string name="spass_not_supported">Unfortunately FingerLock is not compatible with your device and it will not work. Your device vendor is not Samsung or the Samsung fingerprint sensor is missing.</string>
+    <string name="spass_update">FingerLock will not work if you do not update the Samsung Fingerprint library</string>
+    <string name="spass_missing_lib">FingerLock will not work because the Samsung Fingerprint library cannot be found</string>
+    <string name="error">Error</string>
 </resources>
