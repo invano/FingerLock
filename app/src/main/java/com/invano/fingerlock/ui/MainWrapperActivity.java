@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.invano.fingerlock.R;
+import com.invano.fingerlock.util.Util;
 
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
@@ -61,7 +62,7 @@ public class MainWrapperActivity extends ActionBarActivity implements MaterialTa
         if(!locked) {
             locked = true;
             Intent i = new Intent(this, LockActivity.class);
-            i.putExtra("BACKGROUND", backgroundColor);
+            i.putExtra(Util.BACKGROUND_COLOR, backgroundColor);
             startActivityForResult(i, 1);
         }
     }

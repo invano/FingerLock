@@ -48,7 +48,7 @@ public class LockActivity extends Activity implements FingerprintScan.Fingerprin
         fingerprintAnim = (ImageView) findViewById(R.id.fingerprintImage);
         resLabel = (TextView) findViewById(R.id.textViewSpass);
 
-        backgroundColor = getIntent().getIntExtra("BACKGROUND", 0);
+        backgroundColor = getIntent().getIntExtra(Util.BACKGROUND_COLOR, 0);
         getWindow().getDecorView().setBackgroundColor(backgroundColor);
 
         startLocking();

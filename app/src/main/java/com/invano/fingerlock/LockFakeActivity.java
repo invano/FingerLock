@@ -53,7 +53,7 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
         fingerprintAnim = (ImageView) findViewById(R.id.fingerprintImage);
         resLabel = (TextView) findViewById(R.id.textViewSpass);
 
-        int backgroundColor = getIntent().getIntExtra("BACKGROUND", 0);
+        int backgroundColor = getIntent().getIntExtra(Util.BACKGROUND_COLOR, 0);
         getWindow().getDecorView().setBackgroundColor(backgroundColor);
 
         lockedApp = getIntent().getParcelableExtra(Util.ORIG_INTENT);

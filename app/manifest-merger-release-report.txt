@@ -33,12 +33,18 @@ uses-permission#android.permission.BLUETOOTH
 ADDED from AndroidManifest.xml:9:5
 	android:name
 		ADDED from AndroidManifest.xml:9:22
+uses-permission#android.permission.MANAGE_USERS
+ADDED from AndroidManifest.xml:10:5
+	android:name
+		ADDED from AndroidManifest.xml:10:22
 application
-ADDED from AndroidManifest.xml:11:5
+ADDED from AndroidManifest.xml:12:5
 MERGED from com.android.support:appcompat-v7:21.0.3:16:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from com.android.support:support-v13:21.0.3:16:5
+MERGED from com.android.support:support-v4:21.0.3:16:5
+MERGED from com.android.support:palette-v7:21.0.3:16:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from com.android.support:appcompat-v7:21.0.3:16:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
@@ -46,113 +52,143 @@ MERGED from com.github.markushi:android-ui:1.2:9:5
 MERGED from com.android.support:appcompat-v7:21.0.3:16:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
 	android:label
-		ADDED from AndroidManifest.xml:15:9
-	android:allowBackup
-		ADDED from AndroidManifest.xml:13:9
-	android:icon
-		ADDED from AndroidManifest.xml:14:9
-	android:theme
 		ADDED from AndroidManifest.xml:16:9
-	android:manageSpaceActivity
+	android:allowBackup
+		ADDED from AndroidManifest.xml:14:9
+	android:icon
+		ADDED from AndroidManifest.xml:15:9
+	android:theme
 		ADDED from AndroidManifest.xml:17:9
+	android:manageSpaceActivity
+		ADDED from AndroidManifest.xml:18:9
 	android:name
-		ADDED from AndroidManifest.xml:12:9
+		ADDED from AndroidManifest.xml:13:9
 activity#com.invano.fingerlock.ui.MainWrapperActivity
-ADDED from AndroidManifest.xml:18:9
+ADDED from AndroidManifest.xml:19:9
 	android:screenOrientation
-		ADDED from AndroidManifest.xml:21:13
-	android:label
-		ADDED from AndroidManifest.xml:20:13
-	android:configChanges
 		ADDED from AndroidManifest.xml:22:13
-	android:name
-		ADDED from AndroidManifest.xml:19:13
-intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:23:13
-action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:24:17
-	android:name
-		ADDED from AndroidManifest.xml:24:25
-category#android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:26:17
-	android:name
-		ADDED from AndroidManifest.xml:26:27
-activity#com.invano.fingerlock.LockFakeActivity
-ADDED from AndroidManifest.xml:29:9
-	android:screenOrientation
-		ADDED from AndroidManifest.xml:34:13
 	android:label
-		ADDED from AndroidManifest.xml:31:13
+		ADDED from AndroidManifest.xml:21:13
 	android:configChanges
+		ADDED from AndroidManifest.xml:23:13
+	android:name
+		ADDED from AndroidManifest.xml:20:13
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:24:13
+action#android.intent.action.MAIN
+ADDED from AndroidManifest.xml:25:17
+	android:name
+		ADDED from AndroidManifest.xml:25:25
+category#android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:27:17
+	android:name
+		ADDED from AndroidManifest.xml:27:27
+activity#com.invano.fingerlock.LockFakeActivity
+ADDED from AndroidManifest.xml:30:9
+	android:screenOrientation
 		ADDED from AndroidManifest.xml:35:13
-	android:theme
-		ADDED from AndroidManifest.xml:33:13
-	android:exported
+	android:label
 		ADDED from AndroidManifest.xml:32:13
-	android:excludeFromRecents
+	android:configChanges
 		ADDED from AndroidManifest.xml:36:13
-	android:name
-		ADDED from AndroidManifest.xml:30:13
-activity#com.invano.fingerlock.util.ClearDataActivity
-ADDED from AndroidManifest.xml:38:9
 	android:theme
+		ADDED from AndroidManifest.xml:34:13
+	android:exported
+		ADDED from AndroidManifest.xml:33:13
+	android:excludeFromRecents
+		ADDED from AndroidManifest.xml:37:13
+	android:name
+		ADDED from AndroidManifest.xml:31:13
+activity#com.invano.fingerlock.util.ClearDataActivity
+ADDED from AndroidManifest.xml:39:9
+	android:theme
+		ADDED from AndroidManifest.xml:41:13
+	android:name
 		ADDED from AndroidManifest.xml:40:13
-	android:name
-		ADDED from AndroidManifest.xml:39:13
 receiver#com.invano.fingerlock.SecureZoneReceiver
-ADDED from AndroidManifest.xml:41:9
+ADDED from AndroidManifest.xml:42:9
 	android:name
-		ADDED from AndroidManifest.xml:41:19
+		ADDED from AndroidManifest.xml:42:19
 intent-filter#android.bluetooth.device.action.ACL_CONNECTED+android.bluetooth.device.action.ACL_DISCONNECTED+android.net.wifi.STATE_CHANGE+com.invano.fingerlock.SECURE_ZONE_SWITCH_CHANGED
-ADDED from AndroidManifest.xml:42:13
+ADDED from AndroidManifest.xml:43:13
 action#android.net.wifi.STATE_CHANGE
-ADDED from AndroidManifest.xml:43:17
-	android:name
-		ADDED from AndroidManifest.xml:43:25
-action#android.bluetooth.device.action.ACL_CONNECTED
 ADDED from AndroidManifest.xml:44:17
 	android:name
 		ADDED from AndroidManifest.xml:44:25
-action#android.bluetooth.device.action.ACL_DISCONNECTED
+action#android.bluetooth.device.action.ACL_CONNECTED
 ADDED from AndroidManifest.xml:45:17
 	android:name
 		ADDED from AndroidManifest.xml:45:25
-action#com.invano.fingerlock.SECURE_ZONE_SWITCH_CHANGED
+action#android.bluetooth.device.action.ACL_DISCONNECTED
 ADDED from AndroidManifest.xml:46:17
 	android:name
 		ADDED from AndroidManifest.xml:46:25
+action#com.invano.fingerlock.SECURE_ZONE_SWITCH_CHANGED
+ADDED from AndroidManifest.xml:47:17
+	android:name
+		ADDED from AndroidManifest.xml:47:25
 receiver#com.invano.fingerlock.RebootReceiver
-ADDED from AndroidManifest.xml:49:9
+ADDED from AndroidManifest.xml:50:9
 	android:name
-		ADDED from AndroidManifest.xml:49:19
+		ADDED from AndroidManifest.xml:50:19
 intent-filter#com.invano.fingerlock.REBOOT+com.invano.fingerlock.SOFT_REBOOT
-ADDED from AndroidManifest.xml:50:13
+ADDED from AndroidManifest.xml:51:13
 action#com.invano.fingerlock.REBOOT
-ADDED from AndroidManifest.xml:51:17
-	android:name
-		ADDED from AndroidManifest.xml:51:25
-action#com.invano.fingerlock.SOFT_REBOOT
 ADDED from AndroidManifest.xml:52:17
 	android:name
 		ADDED from AndroidManifest.xml:52:25
-meta-data#xposedmodule
-ADDED from AndroidManifest.xml:55:9
+action#com.invano.fingerlock.SOFT_REBOOT
+ADDED from AndroidManifest.xml:53:17
 	android:name
-		ADDED from AndroidManifest.xml:56:13
-	android:value
-		ADDED from AndroidManifest.xml:57:13
-meta-data#xposeddescription
-ADDED from AndroidManifest.xml:58:9
-	android:name
+		ADDED from AndroidManifest.xml:53:25
+activity#com.invano.fingerlock.widget.MasterSwitchActivity
+ADDED from AndroidManifest.xml:56:9
+	android:label
+		ADDED from AndroidManifest.xml:58:13
+	android:theme
 		ADDED from AndroidManifest.xml:59:13
-	android:value
+	android:excludeFromRecents
 		ADDED from AndroidManifest.xml:60:13
-meta-data#xposedminversion
-ADDED from AndroidManifest.xml:61:9
 	android:name
-		ADDED from AndroidManifest.xml:62:13
+		ADDED from AndroidManifest.xml:57:13
+receiver#com.invano.fingerlock.widget.MasterSwitchProvider
+ADDED from AndroidManifest.xml:62:9
+	android:name
+		ADDED from AndroidManifest.xml:62:19
+intent-filter#android.appwidget.action.APPWIDGET_UPDATE+com.invano.fingerlock.MASTER_SWITCH_UPDATE
+ADDED from AndroidManifest.xml:63:13
+action#android.appwidget.action.APPWIDGET_UPDATE
+ADDED from AndroidManifest.xml:64:17
+	android:name
+		ADDED from AndroidManifest.xml:64:25
+action#com.invano.fingerlock.MASTER_SWITCH_UPDATE
+ADDED from AndroidManifest.xml:65:17
+	android:name
+		ADDED from AndroidManifest.xml:65:25
+meta-data#android.appwidget.provider
+ADDED from AndroidManifest.xml:67:13
+	android:resource
+		ADDED from AndroidManifest.xml:69:17
+	android:name
+		ADDED from AndroidManifest.xml:68:17
+meta-data#xposedmodule
+ADDED from AndroidManifest.xml:71:9
+	android:name
+		ADDED from AndroidManifest.xml:72:13
 	android:value
-		ADDED from AndroidManifest.xml:63:13
+		ADDED from AndroidManifest.xml:73:13
+meta-data#xposeddescription
+ADDED from AndroidManifest.xml:74:9
+	android:name
+		ADDED from AndroidManifest.xml:75:13
+	android:value
+		ADDED from AndroidManifest.xml:76:13
+meta-data#xposedminversion
+ADDED from AndroidManifest.xml:77:9
+	android:name
+		ADDED from AndroidManifest.xml:78:13
+	android:value
+		ADDED from AndroidManifest.xml:79:13
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:appcompat-v7:21.0.3:15:5
@@ -160,10 +196,12 @@ MERGED from com.android.support:support-v4:21.0.3:15:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
 MERGED from com.android.support:support-v13:21.0.3:15:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
+MERGED from com.android.support:palette-v7:21.0.3:15:5
+MERGED from com.android.support:support-v4:21.0.3:15:5
 MERGED from com.afollestad:material-dialogs:0.4.3:8:5
 MERGED from com.android.support:appcompat-v7:21.0.3:15:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
-MERGED from it.neokree:MaterialTabs:0.9:7:5
+MERGED from it.neokree:MaterialTabs:0.11:7:5
 MERGED from com.github.markushi:android-ui:1.2:7:5
 MERGED from com.android.support:appcompat-v7:21.0.3:15:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
@@ -173,3 +211,5 @@ MERGED from com.android.support:support-v4:21.0.3:15:5
 	android:minSdkVersion
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
+	tools:overrideLibrary
+		ADDED from it.neokree:MaterialTabs:0.11:10:9
