@@ -2,14 +2,15 @@ package com.invano.fingerlock;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.ImageView;
@@ -23,13 +24,11 @@ public class ImageCheckBoxAdapter extends RecyclerView.Adapter<ImageCheckBoxAdap
 
 
     private List<Map<String, Object>> mItemList, oriItemList;
-    private LayoutInflater mInflater;
     private SharedPreferences pref;
     private Filter mFilter;
     private OnPackageSelectedListener listener;
 
     public ImageCheckBoxAdapter(Context context, List<Map<String, Object>> itemList) {
-        mInflater = LayoutInflater.from(context);
         oriItemList = mItemList = itemList;
         pref = context.getSharedPreferences(this.getClass().getPackage().getName(), Context.MODE_WORLD_READABLE);
         mFilter = new MyFilter();
@@ -58,11 +57,9 @@ public class ImageCheckBoxAdapter extends RecyclerView.Adapter<ImageCheckBoxAdap
         } else
             holder.pkg.setText(key);
 
-        final Object itemIcon = mItemList.get(position).get("icon");
-        if (itemIcon instanceof Bitmap)
-            holder.icon.setImageBitmap((Bitmap) itemIcon);
-        else
-            holder.icon.setImageDrawable((Drawable) itemIcon);
+        holder.icon.setTag(key);
+
+        new IconLoader(holder.icon, key).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         if(pref.getBoolean(key, false)) {
             holder.checkBox.setChecked(true);
@@ -151,6 +148,55 @@ public class ImageCheckBoxAdapter extends RecyclerView.Adapter<ImageCheckBoxAdap
             pkg = (TextView) itemView.findViewById(R.id.packageTextView);
             icon = (ImageView) itemView.findViewById(R.id.iconImageView);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
+        }
+    }
+
+    private class IconLoader extends AsyncTask<Void, Void, Object> {
+        private ImageView iconView;
+        private String packageName;
+
+        public IconLoader(ImageView view, String packageName) {
+            this.packageName = packageName;
+            iconView = view;
+        }
+
+        @Override
+        protected Object doInBackground(Void... params) {
+            Bitmap iconBitmap = null;
+            Drawable iconDrawable = null;
+
+            try {
+                Bitmap icon = ((BitmapDrawable) iconView.getContext().getPackageManager().getApplicationIcon(packageName)).getBitmap();
+                if (icon.getHeight() > 192 || icon.getWidth() > 192) {
+                    iconBitmap = Bitmap.createScaledBitmap(icon, 192, 192, true);
+                } else {
+                    iconBitmap = icon;
+                }
+            } catch (ClassCastException e) {
+                try {
+                    iconDrawable = iconView.getContext().getPackageManager().getApplicationIcon(packageName);
+                } catch (PackageManager.NameNotFoundException e1) {
+                    e1.printStackTrace();
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            if (iconBitmap != null)
+                return iconBitmap;
+            else
+                return iconDrawable;
+        }
+
+        @Override
+        protected void onPostExecute(Object result) {
+            super.onPostExecute(result);
+            if (iconView.getTag().toString().equals(packageName)) {
+                if (result instanceof Bitmap)
+                    iconView.setImageBitmap((Bitmap) result);
+                else
+                    iconView.setImageDrawable((Drawable) result);
+            }
         }
     }
 

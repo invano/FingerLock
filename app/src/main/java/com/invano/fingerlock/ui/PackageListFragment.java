@@ -5,28 +5,21 @@ import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -172,33 +165,9 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
 
                     Map<String, Object> map = new HashMap<>();
                     String label = pm.getApplicationLabel(info.activityInfo.applicationInfo).toString();
-                    Bitmap iconBitmap = null;
-                    Drawable iconDrawable = null;
-
-                    try {
-                        Bitmap icon = ((BitmapDrawable) pm.getApplicationIcon(info.activityInfo.packageName)).getBitmap();
-                        if (icon.getHeight() > 192 || icon.getWidth() > 192) {
-                            iconBitmap = Bitmap.createScaledBitmap(icon, 192, 192, true);
-                        } else {
-                            iconBitmap = icon;
-                        }
-                    } catch (ClassCastException e) {
-                        try {
-                            iconDrawable = pm.getApplicationIcon(info.activityInfo.packageName);
-                        } catch (PackageManager.NameNotFoundException e1) {
-                            e1.printStackTrace();
-                        }
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                    }
 
                     map.put("title", label);
                     map.put("key", info.activityInfo.packageName);
-
-                    if (iconBitmap != null)
-                        map.put("icon", iconBitmap);
-                    else
-                        map.put("icon", iconDrawable);
 
                     items.add(map);
                     uniqueSet.add(info.activityInfo.packageName);
