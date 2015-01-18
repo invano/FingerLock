@@ -84,6 +84,13 @@ public class ImageCheckBoxAdapter extends RecyclerView.Adapter<ImageCheckBoxAdap
     }
 
     @Override
+    public void onViewRecycled(ViewHolder holder) {
+        super.onViewRecycled(holder);
+
+        holder.icon.setImageDrawable(null);
+    }
+
+    @Override
     public long getItemId(int position) {
         return mItemList.get(position).hashCode();
     }
