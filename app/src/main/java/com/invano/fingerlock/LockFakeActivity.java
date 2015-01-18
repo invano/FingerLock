@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.invano.fingerlock.util.LogFile;
 import com.invano.fingerlock.util.Util;
 import com.samsung.android.sdk.pass.SpassFingerprint;
 
@@ -147,6 +148,12 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
     }
 
     @Override
+    public void onBackPressed() {
+        LogFile.i(this, "Access to " + lockedPkgName +" failed");
+        super.onBackPressed();
+    }
+
+    @Override
     public void onIdentifySucceded() {
         fingerprintAnim.setImageResource(R.drawable.scan_success);
         resLabel.setText(getString(R.string.spass_auth_success));
@@ -169,6 +176,7 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                LogFile.i(LockFakeActivity.this, "Access to " + lockedPkgName +" failed");
                 finish();
             }
         }, 2000);

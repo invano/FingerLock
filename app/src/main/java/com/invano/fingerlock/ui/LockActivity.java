@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.invano.fingerlock.FingerprintScan;
 import com.invano.fingerlock.R;
+import com.invano.fingerlock.util.LogFile;
 import com.invano.fingerlock.util.Util;
 import com.samsung.android.sdk.pass.SpassFingerprint;
 
@@ -97,6 +98,7 @@ public class LockActivity extends Activity implements FingerprintScan.Fingerprin
     @Override
     public void onBackPressed() {
         backPressed = true;
+        LogFile.i(this, "Access to FingerLock failed");
         super.onBackPressed();
     }
 
@@ -165,6 +167,7 @@ public class LockActivity extends Activity implements FingerprintScan.Fingerprin
                 scan = new FingerprintScan(getApplicationContext(), this);
                 scan.initialize();
             } else {
+                LogFile.i(this, "Access to FingerLock failed");
                 onIdentifyErrorAttempts();
             }
         } else if (status == SpassFingerprint.STATUS_QUALITY_FAILED) {
