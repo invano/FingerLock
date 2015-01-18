@@ -7,12 +7,11 @@
     android:background="@color/background_material_light"
     tools:context=".PackageSelectorActivity">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listViewPkg"
-        android:divider="@color/divider"
-        android:dividerHeight="1dp"/>
+        android:layout_marginTop="2dp"/>
 
     <ProgressBar
         android:id="@+id/progressBarApps"

@@ -15,6 +15,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +49,7 @@ import java.util.Set;
 
 public class PackageListFragment extends Fragment implements SearchView.OnQueryTextListener {
 
-    private ListView packagesListView;
+    private RecyclerView packagesListView;
     private ImageCheckBoxAdapter listAdapter;
     private SearchView searchView;
 
@@ -65,8 +68,13 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.package_selector_main, container, false);
-        packagesListView = (ListView)rootView.findViewById(R.id.listViewPkg);
+        packagesListView = (RecyclerView)rootView.findViewById(R.id.listViewPkg);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progressBarApps);
+
+        packagesListView.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        packagesListView.setLayoutManager(llm);
+
         return rootView;
 
     }
@@ -74,7 +82,7 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (listAdapter == null || listAdapter.isEmpty()) {
+        if (listAdapter == null) {
             new AppListTask(getActivity()).execute();
         }
     }
@@ -141,6 +149,8 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
         @Override
         protected List<Map<String, Object>> doInBackground(Void... voids) {
 
+            HashSet<String> uniqueSet = new HashSet<>();
+
             PackageManager pm = context.getPackageManager();
             Intent i = new Intent(Intent.ACTION_MAIN, null);
             i.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -149,10 +159,17 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
             ArrayList<Map<String, Object>> items = new ArrayList<>();
             progressBar.setMax(list.size());
             int nApps = 1;
+
             for(ResolveInfo info : list) {
                 if((FLApplication.showSystemApps()
                         || (info.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
                         && !Util.MY_PACKAGE_NAME.equals(info.activityInfo.packageName)) {
+
+                    if (uniqueSet.contains(info.activityInfo.packageName)) {
+                        publishProgress(nApps++);
+                        continue;
+                    }
+
                     Map<String, Object> map = new HashMap<>();
                     String label = pm.getApplicationLabel(info.activityInfo.applicationInfo).toString();
                     Bitmap iconBitmap = null;
@@ -184,8 +201,8 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
                         map.put("icon", iconDrawable);
 
                     items.add(map);
-                    nApps++;
-                    publishProgress(nApps);
+                    uniqueSet.add(info.activityInfo.packageName);
+                    publishProgress(nApps++);
                 }
             }
 
@@ -222,7 +239,9 @@ public class PackageListFragment extends Fragment implements SearchView.OnQueryT
                     }
                 }
             });
+
             packagesListView.setAdapter(listAdapter);
+            packagesListView.setItemAnimator(new DefaultItemAnimator());
             progressBar.setVisibility(View.INVISIBLE);
         }
     }

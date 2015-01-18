@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ImageCheckBoxAdapter extends BaseAdapter {
+public class ImageCheckBoxAdapter extends RecyclerView.Adapter<ImageCheckBoxAdapter.ViewHolder> {
 
 
     private List<Map<String, Object>> mItemList, oriItemList;
@@ -35,56 +36,42 @@ public class ImageCheckBoxAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return mItemList.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemLayoutView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.image_checkbox_adapter, parent, false);
+
+        return new ViewHolder(itemLayoutView);
     }
 
     @Override
-    public Object getItem(int position) {
-        return mItemList.get(position);
-    }
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
-    @Override
-    public long getItemId(int position) {
-        return mItemList.get(position).hashCode();
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        ViewHolder vh;
-
-        if(convertView == null) {
-            vh = new ViewHolder();
-            convertView = mInflater.inflate(R.layout.image_checkbox_adapter, parent, false);
-            vh.title = (TextView) convertView.findViewById(R.id.title);
-            vh.icon = (ImageView) convertView.findViewById(R.id.icon);
-            vh.checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
-            convertView.setTag(vh);
-        }
-        else {
-            vh = (ViewHolder) convertView.getTag();
-        }
-
-        final String itemTitle = (String) mItemList.get(position).get("title");
-        vh.title.setText(itemTitle);
+        final String title = (String) mItemList.get(position).get("title");
+        if (title.length() >= 25) {
+            holder.title.setText(title.substring(0, 24) + "…");
+        } else
+            holder.title.setText(title);
 
         final String key = (String) mItemList.get(position).get("key");
+        if (key.length() >= 35) {
+            holder.pkg.setText(key.substring(0, 34) + "…");
+        } else
+            holder.pkg.setText(key);
 
         final Object itemIcon = mItemList.get(position).get("icon");
         if (itemIcon instanceof Bitmap)
-            vh.icon.setImageBitmap((Bitmap) itemIcon);
+            holder.icon.setImageBitmap((Bitmap) itemIcon);
         else
-            vh.icon.setImageDrawable((Drawable) itemIcon);
+            holder.icon.setImageDrawable((Drawable) itemIcon);
 
         if(pref.getBoolean(key, false)) {
-            vh.checkBox.setChecked(true);
+            holder.checkBox.setChecked(true);
         }
         else {
-            vh.checkBox.setChecked(false);
+            holder.checkBox.setChecked(false);
         }
 
-        vh.checkBox.setOnClickListener(new View.OnClickListener() {
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -97,8 +84,16 @@ public class ImageCheckBoxAdapter extends BaseAdapter {
                 }
             }
         });
+    }
 
-        return convertView;
+    @Override
+    public long getItemId(int position) {
+        return mItemList.get(position).hashCode();
+    }
+
+    @Override
+    public int getItemCount() {
+        return mItemList.size();
     }
 
     public Filter getFilter() {
@@ -143,11 +138,20 @@ public class ImageCheckBoxAdapter extends BaseAdapter {
 
     }
 
-    static class ViewHolder
+    public static class ViewHolder extends RecyclerView.ViewHolder
     {
         TextView title;
+        TextView pkg;
         ImageView icon;
         CheckBox checkBox;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            title = (TextView) itemView.findViewById(R.id.titleTextView);
+            pkg = (TextView) itemView.findViewById(R.id.packageTextView);
+            icon = (ImageView) itemView.findViewById(R.id.iconImageView);
+            checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
+        }
     }
 
     public void registerOnPackageSelected (OnPackageSelectedListener listener) {
