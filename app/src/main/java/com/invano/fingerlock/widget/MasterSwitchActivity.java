@@ -9,6 +9,7 @@ import android.util.Log;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.invano.fingerlock.FLApplication;
 import com.invano.fingerlock.R;
+import com.invano.fingerlock.util.LogFile;
 import com.invano.fingerlock.util.Util;
 import com.samsung.android.sdk.SsdkUnsupportedException;
 import com.samsung.android.sdk.pass.Spass;
@@ -30,6 +31,9 @@ public class MasterSwitchActivity extends Activity {
                 FLApplication.setMasterSwitch(!FLApplication.isMasterSwitch());
                 Intent i = new Intent(Util.MASTER_SWITCH_UPDATE);
                 sendBroadcast(i);
+            }
+            else {
+                LogFile.i(MasterSwitchActivity.this, "Attempt to disable FingerLock failed");
             }
             MasterSwitchActivity.this.finish();
         }
