@@ -127,7 +127,7 @@ public class LockActivity extends Activity implements FingerprintScan.Fingerprin
                             new ArgbEvaluator(),
                             backgroundColor,
                             swatch.getRgb());
-                    backgroundColorAnimator.setDuration(1500);
+                    backgroundColorAnimator.setDuration(1000);
                     backgroundColorAnimator.start();
                     label.setTextColor(swatch.getTitleTextColor());
                     unlockMsg.setTextColor(swatch.getBodyTextColor());

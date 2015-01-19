@@ -126,7 +126,7 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
                             new ArgbEvaluator(),
                             R.color.transparent_back,
                             swatch.getRgb());
-                    backgroundColorAnimator.setDuration(1500);
+                    backgroundColorAnimator.setDuration(1000);
                     backgroundColorAnimator.start();
                     label.setTextColor(swatch.getTitleTextColor());
                     unlockMsg.setTextColor(swatch.getBodyTextColor());
