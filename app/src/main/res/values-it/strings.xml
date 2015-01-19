@@ -59,4 +59,6 @@
     <string name="spass_update">FingerLock non funzionerà se non aggiorni le librerie del sensore di impronte digitali Samsung</string>
     <string name="spass_missing_lib">FingerLock perché le librerie del sensore di impronte digitali Samsung non sono state trovate</string>
     <string name="error">Errore</string>
+    <string name="rate_message">Se ti piace utilizzare FingerLock per favore prendi un momento per lasciare una valutazione. Grazie per il supporto!</string>
+    <string name="rate">Valuta</string>
 </resources>
