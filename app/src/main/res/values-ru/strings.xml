@@ -14,7 +14,7 @@
     <string name="packages">Приложения</string>
     <string name="misc">Прочее</string>
     <string name="title_show_system_apps">Отображать системные приложения</string>
-    <string name="summary_show_system_apps">Требуется перезапуск FingerLock.</string>
+    <string name="summary_show_system_apps"> Изменения вступят в силу после перезапуска приложения. Блокировка системных приложений может ограничить удобство использования и привести к различным проблемам.</string>
     <string name="title_secure_zone">Безопасное окружение</string>
     <string name="summary_secure_zone">Автоматическая разблокировка всех приложений, когда смартфон подключен к доверенной WiFi-сети или Bluetooth-устройству.</string>
     <string name="title_secure_zone_list_wifi">Доверенные сети WiFi</string>
@@ -30,8 +30,7 @@
     <string name="title_mask_notifications">Маскировать уведомления</string>
     <string name="summary_mask_notifications">Запрещать заблокированным приложениям выводить уведомления (заменяются стандартным "New notification").</string>
     <string name="title_backup_password">Включить резервный пароль</string>
-    <string name="summary_backup_password">Отображать кнопку ввода пароля в диалоге сканирования отпечатка пальца (сохраняется в процессе регистрации отпечатка пальца в настройках устройства).</string>
-    <string name="log">Лог</string>
+    <string name="summary_backup_password">Разрешать ввод резервного пароля в диалоге считывания отпечатка при использования виджета или при очистке данных приложения. Пароль задается пользователем при регистрации отпечатков пальцев.</string>    <string name="log">Лог</string>
     <string name="clear_log">Очистить лог</string>
     <string name="clear_data_question">Удалить данные?</string>
     <string name="clear_data_content">Все приложения будут разблокированы, настройки FingerLock сброшены.</string>
@@ -49,4 +48,13 @@
     <string name="log_deleted">Лог удален</string>
     <string name="title_master_switch_disabled">FingerLock отключен</string>
     <string name="title_master_switch_enabled">FingerLock включен</string>
+    <string name="spass_auth_failed">АУТЕНТИФИКАЦИЯ НЕ УДАЛАСЬ\nОтпечаток не распознан</string>
+    <string name="spass_quality_failed">А УТЕНТИФИКАЦИЯ НЕ УДАЛАСЬ\nПроведите пальцем по всей панели сенсора, нажимая сильнее</string>
+    <string name="spass_auth_success">УСПЕШНО</string>
+    <string name="spass_init">Проведите пальцем по сенсору</string>
+    <string name="spass_auth_failed_attempts">Превышен лимит неудачных попыток\nПовторная аутентификация запрешена в течение 30 секунд</string>
+    <string name="spass_not_supported">FingerLock не совместим с вашим устройством (поддерживаются только аппараты Samsung), либо сканер отпечатка пальца неисправен.</string>
+    <string name="spass_update">Обновите библиотеки сканера отпечатков пальцев Samsung</string>
+    <string name="spass_missing_lib">Библиотеки сканера отпечатков пальцев Samsung в устройстве не обнаружены.</string>
+    <string name="error">Ошибка</string>
 </resources>
