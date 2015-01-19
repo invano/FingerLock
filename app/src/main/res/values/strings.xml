@@ -62,4 +62,5 @@
     <string name="error">Error</string>
     <string name="rate_message">If you enjoy using FingerLock please take a moment to rate it. Thanks for your support!</string>
     <string name="rate">Rate</string>
+    <string name="spass_sensor_failed">An error has occurred with the fingerprint sensor. If it continues please restart your device.</string>
 </resources>

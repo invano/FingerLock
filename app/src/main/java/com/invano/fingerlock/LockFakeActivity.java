@@ -148,12 +148,6 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
     }
 
     @Override
-    public void onBackPressed() {
-        LogFile.i(this, "Access to " + lockedPkgName +" failed");
-        super.onBackPressed();
-    }
-
-    @Override
     public void onIdentifySucceded() {
         fingerprintAnim.setImageResource(R.drawable.scan_success);
         resLabel.setText(getString(R.string.spass_auth_success));
@@ -253,7 +247,10 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
             resLabel.setText(getString(R.string.spass_quality_failed));
             scan = new FingerprintScan(getApplicationContext(), this);
             scan.initialize();
+        } else if (status == SpassFingerprint.STATUS_SENSOR_FAILED) {
+            resLabel.setText(getString(R.string.spass_sensor_failed));
         } else {
+            LogFile.i(this, "Access to " + lockedPkgName +" failed");
             finish();
         }
     }

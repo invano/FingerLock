@@ -61,4 +61,5 @@
     <string name="error">Errore</string>
     <string name="rate_message">Se ti piace utilizzare FingerLock per favore prendi un momento per lasciare una valutazione. Grazie per il supporto!</string>
     <string name="rate">Valuta</string>
+    <string name="spass_sensor_failed">Si è verificato un errore improvviso con il sensore di impronte digitali. Se dovesse succedere ancora per favore riavvia il tuo dispositivo.</string>
 </resources>

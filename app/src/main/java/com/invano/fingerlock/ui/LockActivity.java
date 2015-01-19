@@ -98,7 +98,6 @@ public class LockActivity extends Activity implements FingerprintScan.Fingerprin
     @Override
     public void onBackPressed() {
         backPressed = true;
-        LogFile.i(this, "Access to FingerLock failed");
         super.onBackPressed();
     }
 
@@ -175,8 +174,12 @@ public class LockActivity extends Activity implements FingerprintScan.Fingerprin
             resLabel.setText(getString(R.string.spass_quality_failed));
             scan = new FingerprintScan(getApplicationContext(), this);
             scan.initialize();
+        } else if (status == SpassFingerprint.STATUS_SENSOR_FAILED) {
+            setFailedAnimationEnd();
+            resLabel.setText(getString(R.string.spass_sensor_failed));
         } else {
             if (onFocus || backPressed) {
+                LogFile.i(this, "Access to FingerLock failed");
                 sendActivityResultCancel();
             } else {
                 setFailedAnimationEnd();
