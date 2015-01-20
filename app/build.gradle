@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 def versionMajor = 1
 def versionMinor = 0
-def versionPatch = 5
+def versionPatch = 5.1
 
 def gitVersion() {
     def counter = 0
@@ -26,6 +26,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'
     }
 }
 
