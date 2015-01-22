@@ -54,5 +54,5 @@
         android:src="@drawable/highlight_dot"
         android:layout_alignParentEnd="true"
         android:rotation="270"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"/>
 </RelativeLayout>

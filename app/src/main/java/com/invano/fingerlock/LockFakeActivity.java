@@ -7,7 +7,6 @@ import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,7 +14,9 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
+import android.view.Surface;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,29 +37,52 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
 
     private Drawable ic = null;
     private String lb = null;
+    private int backgroundColor;
 
     private ActivityManager am;
-
     private FingerprintScan scan;
 
     private MaterialDialog dialog;
+
+    private boolean configurationChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.lock_fake_activity);
+
         label = (TextView) findViewById(R.id.label_locked);
         icon = (ImageView) findViewById(R.id.icon_locked);
         unlockMsg = (TextView) findViewById(R.id.unlock_msg_textview);
         fingerprintAnim = (ImageView) findViewById(R.id.fingerprintImage);
         resLabel = (TextView) findViewById(R.id.textViewSpass);
 
-        int backgroundColor = getIntent().getIntExtra(Util.BACKGROUND_COLOR, 0);
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        if (rotation == Surface.ROTATION_270) {
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) fingerprintAnim.getLayoutParams();
+            lp.removeRule(RelativeLayout.ALIGN_PARENT_END);
+            lp.addRule(RelativeLayout.ALIGN_PARENT_START);
+            fingerprintAnim.setRotation(90);
+            fingerprintAnim.setLayoutParams(lp);
+        }
+
+        if (savedInstanceState == null) {
+
+            backgroundColor = getIntent().getIntExtra(Util.BACKGROUND_COLOR, 0);
+            lockedApp = getIntent().getParcelableExtra(Util.ORIG_INTENT);
+            lockedPkgName = getIntent().getStringExtra(Util.LOCK);
+        }
+        else {
+
+            backgroundColor = savedInstanceState.getInt(Util.BACKGROUND_COLOR);
+            lockedApp = savedInstanceState.getParcelable(Util.ORIG_INTENT);
+            lockedPkgName = savedInstanceState.getString(Util.LOCK);
+        }
+
         getWindow().getDecorView().setBackgroundColor(backgroundColor);
 
-        lockedApp = getIntent().getParcelableExtra(Util.ORIG_INTENT);
-        lockedPkgName = getIntent().getStringExtra(Util.LOCK);
+
         am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
         am.killBackgroundProcesses(lockedPkgName);
         am.killBackgroundProcesses(Util.MY_PACKAGE_NAME);
@@ -73,30 +97,6 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
 
             scan = new FingerprintScan(getApplicationContext(), this);
             scan.initialize();
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            setContentView(R.layout.lock_fake_activity);
-            label = (TextView) findViewById(R.id.label_locked);
-            icon = (ImageView) findViewById(R.id.icon_locked);
-            fingerprintAnim = (ImageView) findViewById(R.id.fingerprintImage);
-            resLabel = (TextView) findViewById(R.id.textViewSpass);
-        }
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setContentView(R.layout.lock_fake_activity_land );
-            label = (TextView) findViewById(R.id.label_locked);
-            icon = (ImageView) findViewById(R.id.icon_locked);
-            fingerprintAnim = (ImageView) findViewById(R.id.fingerprintImage);
-            resLabel = (TextView) findViewById(R.id.textViewSpass);
-        }
-        if(ic != null && lb != null) {
-            icon.setImageDrawable(ic);
-            label.setText(lb);
         }
     }
 
@@ -119,19 +119,25 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
             @Override
             public void onGenerated(Palette palette) {
                 Palette.Swatch swatch = palette.getDarkVibrantSwatch();
+                int swatchRgb;
                 if (swatch != null) {
-                    final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(
-                            getWindow().getDecorView(),
-                            "backgroundColor",
-                            new ArgbEvaluator(),
-                            R.color.transparent_back,
-                            swatch.getRgb());
-                    backgroundColorAnimator.setDuration(1000);
-                    backgroundColorAnimator.start();
+                    swatchRgb = swatch.getRgb();
                     label.setTextColor(swatch.getTitleTextColor());
                     unlockMsg.setTextColor(swatch.getBodyTextColor());
                     resLabel.setTextColor(swatch.getBodyTextColor());
                 }
+                else {
+                    swatchRgb = R.color.transparent_back;
+                }
+
+                ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(
+                        getWindow().getDecorView(),
+                        "backgroundColor",
+                        new ArgbEvaluator(),
+                        R.color.transparent_back,
+                        swatchRgb);
+                backgroundColorAnimator.setDuration(1000);
+                backgroundColorAnimator.start();
             }
         });
 
@@ -143,8 +149,18 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-        finish();
         super.onStop();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(Util.BACKGROUND_COLOR, backgroundColor);
+        outState.putParcelable(Util.ORIG_INTENT, lockedApp);
+        outState.putString(Util.LOCK, lockedPkgName);
+
+        configurationChanged = true;
     }
 
     @Override
@@ -250,8 +266,10 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
         } else if (status == SpassFingerprint.STATUS_SENSOR_FAILED) {
             resLabel.setText(getString(R.string.spass_sensor_failed));
         } else {
-            LogFile.i(this, "Access to " + lockedPkgName +" failed");
-            finish();
+            if (!configurationChanged) {
+                LogFile.i(this, "Access to " + lockedPkgName +" failed");
+                finish();
+            }
         }
     }
 
@@ -269,6 +287,7 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
             startActivity(intent_option);
             overridePendingTransition(0,0);
         } finally {
+            Log.i("FingerLock", "======= finish() unlockActivity =======");
             finish();
         }
     }
