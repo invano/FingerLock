@@ -29,6 +29,9 @@ public class LockActivity extends Activity implements FingerprintScan.Fingerprin
     private ImageView fingerprintAnim;
     private TextView resLabel;
 
+    private int titleTextColor;
+    private int bodyTextColor;
+
     private FingerprintScan scan;
     private int attempts = 0;
 
@@ -66,13 +69,22 @@ public class LockActivity extends Activity implements FingerprintScan.Fingerprin
             icon = (ImageView) findViewById(R.id.icon_locked);
             fingerprintAnim = (ImageView) findViewById(R.id.fingerprintImage);
             resLabel = (TextView) findViewById(R.id.textViewSpass);
+            unlockMsg = (TextView) findViewById(R.id.unlock_msg_textview);
         }
+
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             setContentView(R.layout.lock_fake_activity_land );
             label = (TextView) findViewById(R.id.label_locked);
             icon = (ImageView) findViewById(R.id.icon_locked);
             fingerprintAnim = (ImageView) findViewById(R.id.fingerprintImage);
             resLabel = (TextView) findViewById(R.id.textViewSpass);
+            unlockMsg = (TextView) findViewById(R.id.unlock_msg_textview);
+        }
+
+        if (bodyTextColor != 0 && titleTextColor != 0) {
+            label.setTextColor(titleTextColor);
+            unlockMsg.setTextColor(bodyTextColor);
+            resLabel.setTextColor(bodyTextColor);
         }
         icon.setImageResource(R.drawable.ic_launcher);
         label.setText(getString(R.string.app_name));
@@ -128,9 +140,13 @@ public class LockActivity extends Activity implements FingerprintScan.Fingerprin
                             swatch.getRgb());
                     backgroundColorAnimator.setDuration(1000);
                     backgroundColorAnimator.start();
-                    label.setTextColor(swatch.getTitleTextColor());
-                    unlockMsg.setTextColor(swatch.getBodyTextColor());
-                    resLabel.setTextColor(swatch.getBodyTextColor());
+
+                    titleTextColor = swatch.getTitleTextColor();
+                    bodyTextColor = swatch.getBodyTextColor();
+
+                    label.setTextColor(titleTextColor);
+                    unlockMsg.setTextColor(bodyTextColor);
+                    resLabel.setTextColor(bodyTextColor);
                 }
             }
         });
