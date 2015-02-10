@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 def versionMajor = 1
-def versionMinor = 0
-def versionPatch = 5.1
+def versionMinor = 1
+def versionPatch = 0 + ".b1"
 
 def gitVersion() {
     def counter = 0

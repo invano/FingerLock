@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
     <application
         android:name=".FLApplication"
         android:allowBackup="true"
@@ -15,6 +17,11 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:manageSpaceActivity=".util.ClearDataActivity">
+
+        <service
+            android:name="com.invano.fingerlock.LockService"
+            android:label="LockService"
+            android:exported="true" />
 
         <activity
             android:name=".ui.MainWrapperActivity"
