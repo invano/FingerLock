@@ -10,6 +10,7 @@ import android.content.res.TypedArray;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.invano.fingerlock.LockService;
 import com.invano.fingerlock.util.Util;
 
 import java.util.Timer;
@@ -23,7 +24,10 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.robv.android.xposed.XposedBridge.hookAllMethods;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
@@ -35,10 +39,14 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     private static TimerTask mActivityTransitionTimerTask;
     private static boolean wasInBackground;
 
-    private static boolean secureZone;
-    private static int transitionTime;
-    private static boolean hideNotifications;
-    private static boolean masterSwitch;
+    private static boolean mSecureZone;
+    private static int mTransitionTime;
+    private static boolean mHideNotifications;
+    private static boolean mMasterSwitch;
+
+    private boolean mFirstLaunch = true;
+    private String mPackageName;
+
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
@@ -50,18 +58,19 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         reloadSettings();
 
-        final String pkg = lpparam.packageName;
-        if (!pref.getBoolean(pkg, false))
+        mPackageName = lpparam.packageName;
+
+        if (!pref.getBoolean(mPackageName, false))
             return;
 
-        final Class<?> activity = XposedHelpers.findClass("android.app.Activity", lpparam.classLoader);
-        final Class<?> nMS = XposedHelpers.findClass("android.app.NotificationManager", lpparam.classLoader);
+        final Class<?> activity = findClass("android.app.Activity", lpparam.classLoader);
+        final Class<?> nMS = findClass("android.app.NotificationManager", lpparam.classLoader);
 
         findAndHookMethod(nMS, "notify", String.class, int.class, Notification.class, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reloadSettings();
-                if (!masterSwitch || secureZone || !hideNotifications)
+                if (!mSecureZone || mMasterSwitch || !mHideNotifications)
                     return;
                 Context context = (Context) getObjectField(param.thisObject, "mContext");
                 Notification nOld = (Notification) param.args[2];
@@ -80,7 +89,7 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 reloadSettings();
-                if (!masterSwitch || secureZone)
+                if (!mMasterSwitch || mSecureZone)
                     return;
                 Window window = (Window) param.getResult();
                 if ((window.getAttributes().flags & WindowManager.LayoutParams.FLAG_SECURE) != WindowManager.LayoutParams.FLAG_SECURE) {
@@ -96,7 +105,7 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 if (app.getClass().getName().equals("android.app.Activity")) {
                     return;
                 }
-                startActivityTransitionTimer();
+                startActivityTransitionTimer(app);
             }
         });
 
@@ -104,73 +113,107 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reloadSettings();
-                if (!masterSwitch || secureZone)
+                if (!mMasterSwitch || mSecureZone)
                     return;
                 final Activity app = (Activity) param.thisObject;
                 if (app.getClass().getName().equals("android.app.Activity")) {
                     return;
                 }
-                if (wasInBackground) {
-                    startFingerLockActivity(app, pkg);
-                    app.moveTaskToBack(true);
-                    android.os.Process.killProcess(android.os.Process.myPid());
+
+                if (wasInBackground && mFirstLaunch) {
+
+                    if (!LockService.isRunning(app)) {
+                        startFingerLockService(app);
+                    }
+                    else {
+                        broadcastUnlockStarted(app);
+                    }
+                    mFirstLaunch = false;
                 }
+
                 stopActivityTransitionTimer();
             }
         });
 
-        Long timestamp = System.currentTimeMillis();
-        Long permitTimestamp = pref.getLong(pkg + "_sec", 0);
-        if (permitTimestamp != 0 && timestamp - permitTimestamp <= Util.MAX_TRANSITION_TIME_MS) {
-            return;
-        }
         hookAllMethods(activity, "onCreate", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 reloadSettings();
-                if (!masterSwitch || secureZone)
+                if (!mMasterSwitch || mSecureZone)
                     return;
                 final Activity app = (Activity) param.thisObject;
                 if (app.getClass().getName().equals("android.app.Activity")) {
                     return;
                 }
-                startFingerLockActivity(app, app.getPackageName());
-                app.moveTaskToBack(true);
-                android.os.Process.killProcess(android.os.Process.myPid());
+
+                if (mFirstLaunch) {
+
+                    if (!LockService.isRunning(app)) {
+                        startFingerLockService(app);
+                    }
+                    else {
+                        broadcastUnlockStarted(app);
+                    }
+                    mFirstLaunch = false;
+                }
             }
         });
 
+        Class system = findClass("java.lang.System", lpparam.classLoader);
+
+        findAndHookMethod(system, "exit", int.class, new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
+                Context context = (Context) callMethod(activityThread, "getSystemContext");
+
+                broadcastUnlockFinished(context);
+            }
+        });
+
+        Class process = findClass("android.os.Process", lpparam.classLoader);
+
+        findAndHookMethod(process, "killProcess", int.class, new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+
+                Object activityThread = callStaticMethod(findClass("android.app.ActivityThread", null), "currentActivityThread");
+                Context context = (Context) callMethod(activityThread, "getSystemContext");
+
+                broadcastUnlockFinished(context);
+            }
+        });
 
     }
 
-    private void startFingerLockActivity(final Activity app, String packageName) {
-        TypedArray array = app.getTheme().obtainStyledAttributes(new int[] {
+    private void startFingerLockService(Context c)
+    {
+        TypedArray typedArray = c.getTheme().obtainStyledAttributes(new int[] {
                 android.R.attr.colorBackground,
         });
-        int backgroundColor = array.getColor(0, 0xFF00FF);
-        array.recycle();
+        int color = typedArray.getColor(0, 0xFF00FF);
+        typedArray.recycle();
 
-        Intent it = new Intent();
-        it.setComponent(new ComponentName(Util.MY_PACKAGE_NAME, Util.MY_PACKAGE_NAME + ".LockFakeActivity"));
-        it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        it.putExtra(Util.ORIG_INTENT, app.getIntent());
-        it.putExtra(Util.LOCK, packageName);
-        it.putExtra(Util.BACKGROUND_COLOR, backgroundColor);
+        Intent i = new Intent();
+        i.setComponent(new ComponentName(Util.MY_PACKAGE_NAME, Util.MY_PACKAGE_NAME + ".LockService"));
+        i.putExtra(Util.LOCK, mPackageName);
+        i.putExtra(Util.BACKGROUND_COLOR, color);
 
-        app.startActivity(it);
-        app.overridePendingTransition(0,0);
+        c.startService(i);
     }
 
-    public void startActivityTransitionTimer() {
+    public void startActivityTransitionTimer(final Context c) {
         mActivityTransitionTimer = new Timer();
         mActivityTransitionTimerTask = new TimerTask() {
             public void run() {
                 wasInBackground = true;
+                broadcastUnlockFinished(c);
             }
         };
 
         reloadSettings();
-        mActivityTransitionTimer.schedule(mActivityTransitionTimerTask, transitionTime);
+        mActivityTransitionTimer.schedule(mActivityTransitionTimerTask, mTransitionTime);
     }
 
     public void stopActivityTransitionTimer() {
@@ -185,11 +228,27 @@ public class LockApp implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         wasInBackground = false;
     }
 
+    private void broadcastUnlockFinished(Context c) {
+
+        Intent localIntent = new Intent("com.invano.fingerlock.UNLOCK_FINISHED");
+        localIntent.putExtra(Util.LOCK, mPackageName);
+        c.sendBroadcast(localIntent);
+
+        mFirstLaunch = true;
+    }
+
+    private void broadcastUnlockStarted(Context c) {
+
+        Intent localIntent = new Intent("com.invano.fingerlock.UNLOCK_STARTED");
+        localIntent.putExtra(Util.LOCK, mPackageName);
+        c.sendBroadcast(localIntent);
+    }
+
     private void reloadSettings() {
         pref.reload();
-        secureZone = pref.getBoolean(Util.SECURE_ZONE_SWITCH, false);
-        transitionTime = pref.getInt(Util.TRANSITION_TIME, Util.MAX_TRANSITION_TIME_MS);
-        hideNotifications = pref.getBoolean(Util.MASK_NOTIFICATIONS, false);
-        masterSwitch = pref.getBoolean(Util.MASTER_SWITCH, true);
+        mSecureZone = pref.getBoolean(Util.SECURE_ZONE_SWITCH, false);
+        mTransitionTime = pref.getInt(Util.TRANSITION_TIME, Util.MAX_TRANSITION_TIME_MS);
+        mHideNotifications = pref.getBoolean(Util.MASK_NOTIFICATIONS, false);
+        mMasterSwitch = pref.getBoolean(Util.MASTER_SWITCH, true);
     }
 }
