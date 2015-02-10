@@ -225,7 +225,7 @@ public class LockActivity extends Activity implements FingerprintScan.Fingerprin
                 .titleColorRes(R.color.primaryColor)
                 .positiveColorRes(R.color.accentColor)
                 .negativeColorRes(R.color.accentColor)
-                .callback(new MaterialDialog.Callback() {
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         dialog.dismiss();
@@ -254,7 +254,7 @@ public class LockActivity extends Activity implements FingerprintScan.Fingerprin
                 .titleColorRes(R.color.primaryColor)
                 .positiveColorRes(R.color.accentColor)
                 .negativeColorRes(R.color.accentColor)
-                .callback(new MaterialDialog.Callback() {
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         dialog.dismiss();

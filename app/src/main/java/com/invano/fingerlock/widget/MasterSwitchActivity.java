@@ -76,7 +76,7 @@ public class MasterSwitchActivity extends Activity {
                             .content(R.string.no_finger)
                             .positiveText(R.string.register)  // the default is 'Accept'
                             .negativeText(R.string.close)
-                            .callback(new MaterialDialog.Callback() {
+                            .callback(new MaterialDialog.ButtonCallback() {
                                 @Override
                                 public void onPositive(MaterialDialog dialog) {
                                     startActivity(new Intent(Settings.ACTION_SETTINGS));

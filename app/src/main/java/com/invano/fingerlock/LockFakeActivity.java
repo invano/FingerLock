@@ -200,7 +200,7 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
                 .content(msg)
                 .positiveText(R.string.ok)  // the default is 'Accept'
                 .negativeText(R.string.close)
-                .callback(new MaterialDialog.Callback() {
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         dialog.dismiss();
@@ -229,7 +229,7 @@ public class LockFakeActivity extends Activity implements FingerprintScan.Finger
                 .titleColorRes(R.color.primaryColor)
                 .positiveColorRes(R.color.accentColor)
                 .negativeColorRes(R.color.accentColor)
-                .callback(new MaterialDialog.Callback() {
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         dialog.dismiss();
